@@ -7,6 +7,7 @@ Username: Brocy076
 This is my own work as defined by the
 University's Academic Misconduct Policy.
 """
+
 import random
 from abc import ABC, abstractmethod
 
@@ -26,23 +27,31 @@ class Animal(ABC):
         self.__enclosure = enclosure
 
     @property
-    def __name_display(self):
+    def name(self):
+        return self.__name
+
+    @property
+    def hunger(self):
+        return self.__hunger
+
+    @property
+    def _name_display(self):
         return f"{self.__name} ({self.__species.upper()})"
 
     @property
-    def __hunger_display(self):
+    def _hunger_display(self):
         return f"Hunger: ({self.__hunger} / {self.__max_hunger})"
 
     def eat_snack(self):
         self.__hunger = min(self.__hunger + self.__max_hunger // 2, 100)
         return (
-            f"{self.__name_display} ate a snack."
-            f"\n{self.__hunger_display}.")
+            f"{self._name_display} ate a snack."
+            f"\n{self._hunger_display}.")
 
     def eat_food(self):
         if self.__enclosure.food_amount == 0:
-            print(
-                f"{self.__name_display} is getting sad, because "
+            return (
+                f"{self._name_display} is getting sad, because "
                 f"there is no food in the enclosure.")
 
         options = [
@@ -64,13 +73,13 @@ class Animal(ABC):
                                     self.__max_hunger)
 
                 return (
-                    f"{self.__name_display} {message}\n"
-                    f"{self.__hunger_display}\n"
+                    f"{self._name_display} {message}\n"
+                    f"{self._hunger_display}\n"
                     f"Food remaining in enclosure: "
                     f"{self.__enclosure.food_amount}"
                 )
 
-        return f"{self.__name_display} is not hungry right now."
+        return f"{self._name_display} is not hungry right now."
 
     @abstractmethod
     def make_sound(self):
@@ -82,8 +91,8 @@ class Animal(ABC):
 
     def __str__(self):
         return (
-            f"{self.__name_display} - Age: {self.__age} "
-            f"\n{self.__hunger_display}.")
+            f"{self._name_display} - Age: {self.__age} "
+            f"\n{self._hunger_display}.")
 
 
 class Bird(Animal):
@@ -91,14 +100,12 @@ class Bird(Animal):
                  enclosure: Enclosure | None = None):
         super().__init__(name, species, age, dietary_needs, enclosure)
 
-    def eat(self):
-        pass
-
     def make_sound(self):
-        pass
+        print("*Skwwackk*")
 
     def sleep(self):
-        pass
+        print(
+            f"shhh... *zzZzZZz* {super()._name_display}, has fallen asleep.")
 
 
 class Mammal(Animal):
@@ -106,14 +113,12 @@ class Mammal(Animal):
                  enclosure: Enclosure | None = None):
         super().__init__(name, species, age, dietary_needs, enclosure)
 
-    def eat(self):
-        pass
-
     def make_sound(self):
-        pass
+        print("*Growls*")
 
     def sleep(self):
-        pass
+        print(
+            f"shhh... *zzZzZZz* {super()._name_display}, has fallen asleep.")
 
 
 class Reptile(Animal):
@@ -121,11 +126,9 @@ class Reptile(Animal):
                  enclosure: Enclosure | None = None):
         super().__init__(name, species, age, dietary_needs, enclosure)
 
-    def eat(self):
-        pass
-
     def make_sound(self):
-        pass
+        print("*SSssSssSs*")
 
     def sleep(self):
-        pass
+        print(
+            f"shhh... *zzZzZZz* {super()._name_display}, has fallen asleep.")
