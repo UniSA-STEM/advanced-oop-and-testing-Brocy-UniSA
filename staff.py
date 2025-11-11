@@ -22,6 +22,9 @@ class Staff(ABC):
     def feed_animal(self):
         pass
 
+    def refill_enclose_food(self):
+        pass
+
     def clean_enclosures(self):
         pass
 
