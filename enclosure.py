@@ -56,7 +56,40 @@ class Enclosure:
         self.__animals_in_enclosure.append(animal)
 
     def __str__(self):
-        return (f"ENCLOSURE: {self.__size} - {self.__environmental_type}"
-                f"\nFOOD AMOUNT: ({self.__food_storage} / "
-                f"{self.__max_food_storage})"
-                f"\nCLEANLINESS: ({self.__cleanliness_level} / 100)")
+        enclosure_space = (f"({len(self.__animals_in_enclosure)} / "
+                           f"{self.__max_animals_in_enclosure})")
+        enclosure_food_space = (f"({self.__food_storage} / "
+                                f"{self.__max_food_storage})")
+        header_text = (f"ENCLOSURE: {self.__size} {enclosure_space}"
+                       f" - {self.__environmental_type}"
+                       f"\nFOOD AMOUNT: {enclosure_food_space}"
+                       f"\nCLEANLINESS: "
+                       f"({self.__cleanliness_level} / 100)")
+
+        animal_blocks = (
+            [str(a).split("\n") for a in self.__animals_in_enclosure]
+            if self.__animals_in_enclosure
+            else [["No animals currently in this enclosure."]])
+
+        all_lines = header_text.split("\n") + [line for block in animal_blocks
+                                               for line in block]
+        max_width = max(len(line) for line in all_lines)
+
+        header_border = "+" + "=" * (max_width + 2) + "+"
+        animal_border = "+" + "-" * (max_width + 2) + "+"
+
+        header_section = (
+                f"{header_border}\n"
+                + "\n".join(f"| {line.ljust(max_width)} |" for line in
+                            header_text.split("\n"))
+                + f"\n{header_border}"
+        )
+
+        animal_sections = []
+        for block in animal_blocks:
+            animal_text = "\n".join(
+                f"| {line.ljust(max_width)} |" for line in block)
+            animal_sections.append(f"{animal_text}\n{animal_border}")
+        animals_section = "\n".join(animal_sections)
+
+        return f"{header_section}\n{animals_section}"
