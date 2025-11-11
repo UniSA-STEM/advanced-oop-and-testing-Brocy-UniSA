@@ -10,17 +10,34 @@ University's Academic Misconduct Policy.
 
 from abc import ABC, abstractmethod
 
+from enclosure import Enclosure
+
 
 class Animal(ABC):
-    def __init__(self, name, species, age, dietary_needs):
-        self.name = name
-        self.species = species
-        self.age = age
-        self.dietary_needs = dietary_needs
+    def __init__(self, name: str, species: str, age: int,
+                 dietary_needs: list[str],
+                 enclosure: Enclosure | None = None):
+        self.__name = name
+        self.__species = species
+        self.__age = age
+        self.__dietary_needs = dietary_needs
+        self.__hunger = 0
+        self.__max_hunger = 100
+        self.__enclosure = enclosure
 
-    @abstractmethod
-    def eat(self):
-        pass
+    @property
+    def __name_display(self):
+        return f"{self.__name} ({self.__species.upper()})"
+
+    @property
+    def __hunger_display(self):
+        return f"Hunger: ({self.__hunger} / {self.__max_hunger})"
+
+    def eat_snack(self):
+        self.__hunger = min(self.__hunger + self.__max_hunger // 2, 100)
+        return (
+            f"{self.__name_display} ate a snack."
+            f"\n{self.__hunger_display}.")
 
     @abstractmethod
     def make_sound(self):
