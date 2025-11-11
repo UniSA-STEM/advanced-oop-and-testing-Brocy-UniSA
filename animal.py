@@ -16,26 +16,33 @@ from enclosure import Enclosure
 
 class Animal(ABC):
     def __init__(self, name: str, species: str, age: int,
-                 dietary_needs: list[str],
-                 enclosure: Enclosure | None = None):
+                 dietary_needs: list[str]):
         self.__name = name
         self.__species = species
         self.__age = age
         self.__dietary_needs = dietary_needs
         self.__hunger = 0
         self.__max_hunger = 100
-        self.__enclosure = enclosure
+        self.__enclosure = None
 
     @property
     def name(self):
         return self.__name
 
     @property
+    def species(self):
+        return self.__species
+
+    @property
     def hunger(self):
         return self.__hunger
 
     @property
-    def _name_display(self):
+    def enclosure(self):
+        return self.__enclosure
+
+    @property
+    def name_display(self):
         return f"{self.__name} ({self.__species.upper()})"
 
     @property
@@ -45,13 +52,16 @@ class Animal(ABC):
     def eat_snack(self):
         self.__hunger = min(self.__hunger + self.__max_hunger // 2, 100)
         return (
-            f"{self._name_display} ate a snack."
+            f"{self.name_display} ate a snack."
             f"\n{self._hunger_display}.")
 
     def eat_food(self):
+        if self.__enclosure is None:
+            return (f"{self.name_display} needs to be put in an "
+                    f"enclosure.")
         if self.__enclosure.food_amount == 0:
             return (
-                f"{self._name_display} is getting sad, because "
+                f"{self.name_display} is getting sad, because "
                 f"there is no food in the enclosure.")
 
         options = [
@@ -73,13 +83,27 @@ class Animal(ABC):
                                     self.__max_hunger)
 
                 return (
-                    f"{self._name_display} {message}\n"
+                    f"{self.name_display} {message}\n"
                     f"{self._hunger_display}\n"
                     f"Food remaining in enclosure: "
                     f"{self.__enclosure.food_amount}"
                 )
 
-        return f"{self._name_display} is not hungry right now."
+        return f"{self.name_display} is not hungry right now."
+
+    def assign_enclosure(self, enclosure: Enclosure):
+        if (self.species == enclosure.species_housed or
+                enclosure.species_housed is None):
+            if enclosure.check_availability():
+                enclosure.add_animal(self)
+                self.__enclosure = enclosure
+                return (f"{self.name_display} has been added to this "
+                        f"enclosure.")
+            return (f"There is not enough space in this enclosure for "
+                    f"{self.name_display}.")
+        return (f"This is a {enclosure.species_housed} enclosure. "
+                f"{self.name_display} is not a "
+                f"{enclosure.species_housed}.")
 
     @abstractmethod
     def make_sound(self):
@@ -91,44 +115,41 @@ class Animal(ABC):
 
     def __str__(self):
         return (
-            f"{self._name_display} - Age: {self.__age} "
+            f"{self.name_display} - Age: {self.__age} "
             f"\n{self._hunger_display}.")
 
 
 class Bird(Animal):
-    def __init__(self, name, species, age, dietary_needs,
-                 enclosure: Enclosure | None = None):
-        super().__init__(name, species, age, dietary_needs, enclosure)
+    def __init__(self, name, species, age, dietary_needs):
+        super().__init__(name, species, age, dietary_needs)
 
     def make_sound(self):
-        print("*Skwwackk*")
+        print(f"{super().name_display} Squawks")
 
     def sleep(self):
         print(
-            f"shhh... *zzZzZZz* {super()._name_display}, has fallen asleep.")
+            f"shhh... *zzZzZZz* {super().name_display}, has fallen asleep.")
 
 
 class Mammal(Animal):
-    def __init__(self, name, species, age, dietary_needs,
-                 enclosure: Enclosure | None = None):
-        super().__init__(name, species, age, dietary_needs, enclosure)
+    def __init__(self, name, species, age, dietary_needs):
+        super().__init__(name, species, age, dietary_needs)
 
     def make_sound(self):
-        print("*Growls*")
+        print(f"{super().name_display} Growls")
 
     def sleep(self):
         print(
-            f"shhh... *zzZzZZz* {super()._name_display}, has fallen asleep.")
+            f"shhh... *zzZzZZz* {super().name_display}, has fallen asleep.")
 
 
 class Reptile(Animal):
-    def __init__(self, name, species, age, dietary_needs,
-                 enclosure: Enclosure | None = None):
-        super().__init__(name, species, age, dietary_needs, enclosure)
+    def __init__(self, name, species, age, dietary_needs):
+        super().__init__(name, species, age, dietary_needs)
 
     def make_sound(self):
-        print("*SSssSssSs*")
+        print(f"{super().name_display} Hisses")
 
     def sleep(self):
         print(
-            f"shhh... *zzZzZZz* {super()._name_display}, has fallen asleep.")
+            f"shhh... *zzZzZZz* {super().name_display}, has fallen asleep.")
