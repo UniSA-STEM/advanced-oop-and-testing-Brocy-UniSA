@@ -80,6 +80,11 @@ class Animal(ABC):
     def sleep(self):
         pass
 
+    def __str__(self):
+        return (
+            f"{self.__name_display} - Age: {self.__age} "
+            f"\n{self.__hunger_display}.")
+
 
 class Bird(Animal):
     def __init__(self, name, species, age, dietary_needs,

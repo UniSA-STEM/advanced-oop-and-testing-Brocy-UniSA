@@ -33,3 +33,8 @@ class Enclosure:
     def refill_food(self):
         self.__food_storage = self.__max_food_storage
 
+    def __str__(self):
+        return (f"ENCLOSURE: {self.__size} - {self.__environmental_type}"
+                f"\nFOOD AMOUNT: ({self.__food_storage} / "
+                f"{self.__max_food_storage})"
+                f"\nCLEANLINESS: ({self.__cleanliness_level} / 100)")
