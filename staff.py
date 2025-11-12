@@ -34,8 +34,11 @@ class Staff(ABC):
         enclosure.refill_food()
         return f"{self.__name} has filled up the enclosure with food."
 
-    def clean_enclosures(self):
-        pass
+    def clean_enclosure(self, enclosure):
+        if enclosure.cleanliness_level == 100:
+            return f"This enclosure doesn't need to be cleaned"
+        enclosure.clean_enclosure()
+        return f"{self.__name} cleaned up the enclosure"
 
     def conduct_animal_health_check(self):
         pass

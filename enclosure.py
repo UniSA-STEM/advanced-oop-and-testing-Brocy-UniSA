@@ -31,6 +31,13 @@ class Enclosure:
             self.__max_food_storage = 200
 
     @property
+    def cleanliness_level(self):
+        return self.__cleanliness_level
+
+    def clean_enclosure(self):
+        self.__animals_in_enclosure = 0
+
+    @property
     def food_amount(self):
         return self.__food_storage
 
