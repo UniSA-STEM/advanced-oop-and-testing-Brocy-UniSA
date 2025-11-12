@@ -25,7 +25,8 @@ class Staff(ABC):
         if animal.hunger == animal.max_hunger:
             return (f"{animal.name_display} was not hungry and went to"
                     f" play.")
-        return f"{self.__name} feed {animal.name_display}."
+        animal.eat_snack()
+        return f"{self.__name} fed {animal.name_display}."
 
     def refill_enclose_food(self):
         pass

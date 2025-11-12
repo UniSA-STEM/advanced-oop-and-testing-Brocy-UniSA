@@ -50,14 +50,14 @@ class Animal(ABC):
         return f"{self.__name} ({self.__species.upper()})"
 
     @property
-    def _hunger_display(self):
+    def hunger_display(self):
         return f"Hunger: ({self.__hunger} / {self.__max_hunger})"
 
     def eat_snack(self):
         self.__hunger = min(self.__hunger + self.__max_hunger // 2, 100)
         return (
             f"{self.name_display} ate a snack."
-            f"\n{self._hunger_display}.")
+            f"\n{self.hunger_display}.")
 
     def eat_food(self):
         if self.__enclosure is None:
@@ -88,7 +88,7 @@ class Animal(ABC):
 
                 return (
                     f"{self.name_display} {message}\n"
-                    f"{self._hunger_display}\n"
+                    f"{self.hunger_display}\n"
                     f"Food remaining in enclosure: "
                     f"{self.__enclosure.food_amount}"
                 )
@@ -120,7 +120,7 @@ class Animal(ABC):
     def __str__(self):
         return (
             f"{self.name_display} - Age: {self.__age} "
-            f"\n{self._hunger_display}.")
+            f"\n{self.hunger_display}.")
 
 
 class Bird(Animal):
