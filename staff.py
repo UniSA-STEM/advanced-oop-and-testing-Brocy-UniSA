@@ -28,8 +28,11 @@ class Staff(ABC):
         animal.eat_snack()
         return f"{self.__name} fed {animal.name_display}."
 
-    def refill_enclose_food(self):
-        pass
+    def refill_enclose_food(self, enclosure):
+        if enclosure.max_food == enclosure.max_food_amount:
+            return f"This enclosure doesn't need more food"
+        enclosure.refill_food()
+        return f"{self.__name} has filled up the enclosure with food."
 
     def clean_enclosures(self):
         pass

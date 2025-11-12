@@ -39,6 +39,10 @@ class Enclosure:
         self.__food_storage = max(0, min(value, self.__max_food_storage))
 
     @property
+    def max_food_amount(self):
+        return self.__max_food_storage
+
+    @property
     def species_housed(self):
         return self.__species_housed
 
