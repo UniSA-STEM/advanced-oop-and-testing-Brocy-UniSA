@@ -12,15 +12,20 @@ from abc import ABC, abstractmethod
 
 
 class Staff(ABC):
-    def __init__(self):
-        pass
+    def __init__(self, name):
+        self.__name = name
+        self.__assigned_animal = []
+        self.__assigned_enclosure = []
 
     @abstractmethod
-    def do_stuff(self):  # temp function name
+    def daily_tasks(self):
         pass
 
-    def feed_animal(self):
-        pass
+    def feed_animal(self, animal):
+        if animal.hunger == animal.max_hunger:
+            return (f"{animal.name_display} was not hungry and went to"
+                    f" play.")
+        return f"{self.__name} feed {animal.name_display}."
 
     def refill_enclose_food(self):
         pass
@@ -33,10 +38,10 @@ class Staff(ABC):
 
 
 class Zookeeper(Staff):
-    def do_stuff(self):
+    def daily_tasks(self):
         pass
 
 
 class Veterinarian(Staff):
-    def do_stuff(self):
+    def daily_tasks(self):
         pass

@@ -38,6 +38,10 @@ class Animal(ABC):
         return self.__hunger
 
     @property
+    def max_hunger(self):
+        return self.__max_hunger
+
+    @property
     def enclosure(self):
         return self.__enclosure
 
