@@ -19,7 +19,20 @@ class Staff(ABC):
         self.__assigned_animal = []
         self.__assigned_enclosure = []
 
+    # Properties
+
+    @property
+    def name(self):
+        return self.__name
+
+    # Abstract methods
+
     @abstractmethod
+    def daily_tasks(self):
+        pass
+
+
+class Zookeeper(Staff):
     def daily_tasks(self):
         pass
 
@@ -42,71 +55,50 @@ class Staff(ABC):
         enclosure.clean_enclosure()
         return f"{self.__name} cleaned up the enclosure"
 
-    def conduct_animal_health_check(self, animal):
-        if random.random() < 0.25:
-            problem_map = {
-                Bird: [
-                    "broken wing",
-                    "feather loss",
-                    "overgrown beak",
-                    "parasites",
-                    "eye irritation",
-                    "skin irritation",
-                    "foot sores",
-                    "overgrown claws",
-                    "feather mites",
-                    "wound infection",
-                    "avian pox symptoms"
-                ],
-                Reptile: [
-                    "incomplete shed",
-                    "retained eye caps",
-                    "parasites",
-                    "scale damage",
-                    "fungal infection",
-                    "skin irritation",
-                    "overgrown nails",
-                    "digestive blockage",
-                    "thermal burns",
-                    "swollen joints",
-                    "stomatitis"
-                ],
-                Mammal: [
-                    "fleas",
-                    "ticks",
-                    "skin irritation",
-                    "dental issues",
-                    "ear infection",
-                    "parasites",
-                    "joint pain",
-                    "digestive upset",
-                    "overgrown nails",
-                    "wound infection",
-                    "eye irritation",
-                    "allergic reaction",
-                    "muscle strain"
-                ]
-            }
-
-            for species, problems in problem_map.items():
-                if isinstance(animal, species):
-                    problem = random.choice(problems)
-                    return (
-                        f"{self.__name} has helped {animal.name_display}"
-                        f" with their {problem}.")
-                return None
-            return None
-
-        else:
-            return (f"{self.__name} did not find anything wro"
-                    f"ng with {animal.name_display}.")
-
-
-class Zookeeper(Staff):
-    def daily_tasks(self):
-        pass
-
 
 class Veterinarian(Staff):
     def daily_tasks(self):
+        pass
+
+    def conduct_animal_health_check(self, animal):
+        if random.random() >= 0.25:
+            return (f"{self.__name} did not find anything wrong with "
+                    f"{animal.name_display}.")
+        problem_map = {
+            Bird: [
+                "broken wing", "feather loss", "overgrown beak",
+                "parasites", "eye irritation", "skin irritation",
+                "foot sores", "overgrown claws", "feather mites",
+                "wound infection", "avian pox symptoms"
+            ],
+            Reptile: [
+                "incomplete shed", "retained eye caps",
+                "parasites", "scale damage", "fungal infection",
+                "skin irritation", "overgrown nails",
+                "digestive blockage", "thermal burns",
+                "swollen joints", "stomatitis"
+            ],
+            Mammal: [
+                "fleas", "ticks", "skin irritation",
+                "dental issues", "ear infection", "parasites",
+                "joint pain", "digestive upset", "overgrown nails",
+                "wound infection", "eye irritation",
+                "allergic reaction", "muscle strain"
+            ]
+        }
+
+        sick_animals = []
+        for species, problems in problem_map.items():
+            if isinstance(animal, species):
+                sick_animals.append(animal)
+                problem = random.choice(problems)
+
+                print(problem)  # Temporary
+                animal.is_sick = True
+
+                return (f"{self.__name} has found that "
+                        f"{animal.name_display}, needs to be treated.")
+        return None
+
+    def take_care_of_sick_animals(self):
         pass
