@@ -10,61 +10,18 @@ University's Academic Misconduct Policy.
 
 
 class Enclosure:
-    def __init__(self, size, environmental_type, cleanliness_level):
+    def __init__(self, size, environmental_type):
         self.__size = size
         self.__environmental_type = environmental_type
-        self.__cleanliness_level = cleanliness_level
+        self.__cleanliness_level = 100
         self.__species_housed = None
         self.__animals_in_enclosure = []
-        if self.__size == "Small":
-            self.__max_animals_in_enclosure = 2
-        elif self.__size == "Medium":
-            self.__max_animals_in_enclosure = 5
-        elif self.__size == "Large":
-            self.__max_animals_in_enclosure = 10
         self.__food_storage = 0
-        if self.__size == "Small":
-            self.__max_food_storage = 50
-        elif self.__size == "Medium":
-            self.__max_food_storage = 100
-        elif self.__size == "Large":
-            self.__max_food_storage = 200
 
-    @property
-    def cleanliness_level(self):
-        return self.__cleanliness_level
-
-    def clean_enclosure(self):
-        self.__animals_in_enclosure = 0
-
-    @property
-    def food_amount(self):
-        return self.__food_storage
-
-    @food_amount.setter
-    def food_amount(self, value):
-        self.__food_storage = max(0, min(value, self.__max_food_storage))
-
-    @property
-    def max_food_amount(self):
-        return self.__max_food_storage
-
-    @property
-    def species_housed(self):
-        return self.__species_housed
-
-    def refill_food(self):
-        self.__food_storage = self.__max_food_storage
-
-    def check_availability(self):
-        if len(self.__animals_in_enclosure) >= self.__max_animals_in_enclosure:
-            return False
-        return True
-
-    def add_animal(self, animal):
-        if self.__species_housed is None:
-            self.__species_housed = animal.species
-        self.__animals_in_enclosure.append(animal)
+        size_map = {"Small": 2, "Medium": 5, "Large": 10}
+        self.__max_animals_in_enclosure = size_map[size]
+        max_food_map = {"Small": 50, "Medium": 100, "Large": 200}
+        self.__max_food_storage = max_food_map[size]
 
     def __str__(self):
         enclosure_space = (f"({len(self.__animals_in_enclosure)} / "
@@ -104,3 +61,56 @@ class Enclosure:
         animals_section = "\n".join(animal_sections)
 
         return f"{header_section}\n{animals_section}"
+
+    # Properties
+
+    @property
+    def cleanliness_level(self):
+        return self.__cleanliness_level
+
+    @cleanliness_level.setter
+    def cleanliness_level(self, value):
+        self.__cleanliness_level = max(0, min(value, 100))
+
+    @property
+    def food_amount(self):
+        return self.__food_storage
+
+    @food_amount.setter
+    def food_amount(self, value):
+        self.__food_storage = max(0, min(value, self.__max_food_storage))
+
+    @property
+    def max_food_amount(self):
+        return self.__max_food_storage
+
+    @property
+    def species_housed(self):
+        return self.__species_housed
+
+    # Enclosure logic
+
+    def refill_food(self):
+        self.__food_storage = self.__max_food_storage
+
+    def clean_enclosure(self):
+        self.__animals_in_enclosure = 100
+
+    # Animal interactivity
+
+    def check_availability(self):
+        if len(self.__animals_in_enclosure) >= self.__max_animals_in_enclosure:
+            return False
+        return True
+
+    def add_animal(self, animal):
+        if self.__species_housed is None:
+            self.__species_housed = animal.species
+        self.__animals_in_enclosure.append(animal)
+
+    def remove_animal(self, animal_to_remove):
+        if animal_to_remove in self.__animals_in_enclosure:
+            self.__animals_in_enclosure.remove(animal_to_remove)
+
+        if not self.__animals_in_enclosure:
+            self.__species_housed = None
